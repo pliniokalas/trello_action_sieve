@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import { Link, Routes, Route } from 'react-router-dom';
+import Form from './components/form';
+import Help from './components/help';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <nav>
+        <Link to='/'>Início</Link>
+        <Link to='/ajuda'>Ajuda</Link>
+      </nav>
+
+      <header>
+        <h1>Trello Extractor</h1>
       </header>
+
+      <Routes>
+        <Route path='/' element={<Form />} />
+        <Route path='/ajuda' element={<Help />} />
+      </Routes>
     </div>
   );
 }
