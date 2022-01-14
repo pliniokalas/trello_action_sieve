@@ -1,0 +1,61 @@
+.extractorForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.extractorForm > *:not(:last-child, h3) {
+  margin-bottom: .5rem;
+}
+
+details {
+  padding: .5rem;
+  border-radius: 5px;
+  background-color: var(--color_11); 
+}
+
+details article {
+  padding: 0 1rem;
+}
+
+details[open] {
+  background-color: var(--color_10);
+}
+
+summary {
+  cursor: pointer;
+  color: var(--color_9);
+  font-weight: 700;
+  font-size: small;
+}
+
+details[open] summary {
+  color: var(--color_0);
+}
+
+details blockquote {
+  text-align: center;
+}
+
+/* ----------------------------------------------------------------------------------- */
+
+.downloadScreen p {
+  text-align: center;
+}
+
+.downloadScreen menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.downloadScreen menu .button,
+.downloadScreen menu button {
+  text-decoration: none;
+  margin: 0 .5rem;
+}
+
+.backBtn {
+  background-color: var(--color_11);
+  color: inherit; 
+}

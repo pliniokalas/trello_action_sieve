@@ -5,18 +5,69 @@
   --color_3: #f7b801ff;
   --color_4: #bd1f36ff;
   --color_5: #81c14bff;
-  --color_6: #2b9348ff;
-  --color_7: lightgray;
+  --color_6: #1e6832;
+  --color_7: #c3cfd0;
   --color_8: gray;
   --color_9: #172B4D;
   --color_10: #0496ff21;
+  --color_11: #aab7bf;
 }
+
+/* GLOBALS --------------------------------------------------------------------------- */
+
+
+input {
+  padding: .5rem;
+  border: none;
+  border-radius: 2px;
+  color: var(--color_8); 
+}
+
+.btnIcon {
+  fill: currentColor; 
+  margin-right: 5px;
+}
+
+button, .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem 2rem;
+  margin: 1rem auto;
+
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--color_6);
+  background-color: var(--color_5);
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+@keyframes dissolveIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* APP ------------------------------------------------------------------------------- */
 
 html { height: 100vh; }
 
 body {
   height: 100vh;
   margin: 0;
+  background-color: var(--color_7);
+  font-size: .9rem;
 }
 
 #root { height: 100%; }
@@ -24,21 +75,54 @@ body {
 .App {
   height: 100%;
   padding: 1rem;
+  margin: auto;
   box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
 
-  background-color: var(--color_7);
   color: var(--color_9);
   font-family: sans-serif;
 }
 
 nav {
   padding: .5rem;
+  display: flex;
+  margin: 0 auto;
 }
 
 nav > *:not(:last-child) {
   margin-right: .5rem;
+}
+
+nav > a {
+  display: flex;
+  align-items: center;
+
+  padding: .5rem;
+
+  border-radius: 3px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+nav > a.on {
+  color: var(--color_0);
+  background-color: var(--color_10);
+}
+
+nav > a:hover {
+  color: var(--color_9);
+  background-color: var(--color_11); 
+}
+
+h1 {
+  text-align: center;
+}
+
+main {
+  width: min(35rem, 100%);
+  margin: 0 auto;
+  animation: dissolveIn 300ms ease-out 0s forwards;
 }
