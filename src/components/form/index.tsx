@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { CSVLink } from "react-csv";
-import extract from '../services/extractor';
-import { IActivity } from '../utils/interfaces';
-import './form.css';
+import extract from 'services/extractor';
+import { IActivity } from 'utils/interfaces';
+
+import { ReactComponent as SendIcon } from 'assets/send_icon.svg';
+import './styles.css';
 
 // -------------------------------------------------------------------------------------- 
 
@@ -11,13 +13,16 @@ const FILENAME = `trello_${(new Date()).toISOString().split('T')[0]}.csv`;
 // -------------------------------------------------------------------------------------- 
 
 function Form() {
-  const [fields, setFields] = useState({ apiKey: '', token: '', orgs: '' });
+  const [orgs, setOrgs] = useState('');
   const [file, setFile] = useState([] as IActivity[]) 
 
   // Attempt to perform the extraction.
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { apiKey, token, orgs } = fields;
+
+    const apiKey = 'cea234f8a2cc0bbd06523a66b9b8c2c9';
+    const token = localStorage.getItem('token') as string; 
+
     const csv = await extract({ apiKey, token, organizations: [orgs] });
 
     if (!csv) {
@@ -42,9 +47,8 @@ function Form() {
 
   // Update input fields.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const field = e.target;
-    setFields(prev => ({ ...prev, [field.name]: field.value }));
-    updateConfig(field);
+    setOrgs(e.target.value);
+    updateConfig(e.target);
   }
 
   // Grab previous input values from the localStorage.
@@ -53,52 +57,55 @@ function Form() {
 
     if (configJson) {
       const config = JSON.parse(configJson);
-
-      setFields({
-        apiKey: config.apiKey || '',
-        token: config.token || '',
-        orgs: config.orgs || '',
-      });
+      setOrgs(config.orgs || '');
     }
   }, []);
 
+  if (file.length) {
+    return (
+      <main className='downloadScreen' key={1}>
+        <p>Extração concluída!</p>
+
+        <menu>
+          <button onClick={() => setFile([])} className='backBtn'>
+            Voltar 
+          </button>
+
+          <CSVLink data={file} filename={FILENAME} className='button'>
+            Baixar arquivo .csv 
+          </CSVLink>
+        </menu>
+      </main>
+    );
+  }
+
   return (
-    <main>
-      <form onSubmit={handleSubmit}>
-        <label>App-key</label>
-        <input
-          value={fields['apiKey']}
-          onChange={handleChange}
-          name='apiKey'
-          type='password'
-        />
+    <main key={2}>
+      <form className='extractorForm' onSubmit={handleSubmit}>
+        <h3>Organizações (workspaces)</h3>
 
-        <label>Token</label>
-        <input
-          value={fields['token']}
-          onChange={handleChange}
-          name='token'
-          type='password'
-        />
+        <details>
+          <summary>Dica</summary>
+          <article>
+            <p>Abaixo insira uma lista separada por vírgulas de "shortnames" das workspaces das quais deseja extrair dados.</p>
+            <p>O shortname é o que aparece no final da URL quando você acessa o painel de uma workspace.</p>
+            <blockquote>https://trello.com/<strong>shortname</strong></blockquote>
+          </article>
+        </details>
 
-        <label>Organizações (workspaces)</label>
         <input
-          value={fields['orgs']}
+          value={orgs}
           onChange={handleChange}
           name='orgs'
           type='text'
+          placeholder='workspace1,workspace2,workspace3'
         />
 
         <button>
+          <SendIcon className='btnIcon' />
           Enviar
         </button>
       </form>
-
-      {!!file.length &&
-        <CSVLink data={file} filename={FILENAME}>
-          Baixar
-        </CSVLink>
-      }
     </main>
   );
 }

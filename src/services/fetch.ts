@@ -10,8 +10,6 @@ async function fetchData(config: IConfigProps) {
   const auth = `key=${apiKey}&token=${token}`
 
   // Get all the boards from the organizations. 
-  console.info('Encontrando quadros...');
-
   const idResult: string[][] = await Promise.all(
     organizations.map(async (org: string) => {
       const boardUrl = `${baseUrl}/1/organizations/${org}/boards?${auth}`;
