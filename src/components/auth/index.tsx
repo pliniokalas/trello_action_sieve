@@ -9,12 +9,12 @@ function Auth({ auth }: { auth: () => void}) {
   const navigate = useNavigate();
 
   async function requestAuth() {
-    const baseUrl = 'https://api.trello.com';
+    const baseUrl = process.env.REACT_APP_BASE_URL;
 
     const params = new URLSearchParams([
       ['scope', 'read'],
-      ['expiration', '30days'],
-      ['name', 'TrelloExtractor'],
+      ['expiration', '1day'],
+      ['name', 'Trello Extractor'],
       ['key', process.env.REACT_APP_API_KEY as string],
       ['response_type', 'token'],
     ]);
