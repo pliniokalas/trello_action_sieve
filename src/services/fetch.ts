@@ -10,6 +10,8 @@ async function fetchData(config: IConfigProps) {
   const auth = `key=${apiKey}&token=${token}`
 
   // Get all the boards from the organizations. 
+  console.info('Quadros encontrados:');
+
   const idResult: string[][] = await Promise.all(
     organizations.map(async (org: string) => {
       const boardUrl = `${baseUrl}/1/organizations/${org}/boards?${auth}`;
@@ -36,7 +38,10 @@ async function fetchData(config: IConfigProps) {
   );
 
   // [[a, b]] -> [a, b]
-  return actionsResult.flat(1);
+  const actions = actionsResult.flat(1);
+  console.info(`Atividades encontradas: ${actions.length}.`);
+
+  return actions;
 }
 
 // --------------------------------------------------------------------------------------

@@ -41,12 +41,12 @@ async function extract(config: IConfigProps) {
         : typeDictionary[actionData.type];
 
       const activity: IActivity = {
-        status,
-        board: actionData.data.board.name,
-        card: actionData.data.card.name,
-        date: actionData.date,
-        weekDay: Week[new Date(actionData.date).getDay()],
         member: actionData.memberCreator.fullName,
+        board: actionData.data.board.name,
+        date: (new Date(actionData.date)).toLocaleString('pt-br'),
+        weekDay: Week[new Date(actionData.date).getDay()],
+        card: actionData.data.card.name,
+        status,
       }
 
       return activity;

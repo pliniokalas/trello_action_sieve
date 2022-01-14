@@ -16,11 +16,20 @@ function Form() {
   const [orgs, setOrgs] = useState('');
   const [file, setFile] = useState([] as IActivity[]) 
 
+  const headers = [
+  { label: 'Membro', key: 'member' },
+  { label: 'Quadro', key: 'board' },
+  { label: 'Data', key: 'date' },
+  { label: 'Dia da sem', key: 'weekDay' },
+  { label: 'Tarefa', key: 'card' },
+  { label: 'Situação', key: 'status' },
+  ];
+
   // Attempt to perform the extraction.
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const apiKey = 'cea234f8a2cc0bbd06523a66b9b8c2c9';
+    const apiKey = process.env.REACT_APP_API_KEY as string; 
     const token = localStorage.getItem('token') as string; 
 
     const csv = await extract({ apiKey, token, organizations: [orgs] });
@@ -71,7 +80,12 @@ function Form() {
             Voltar 
           </button>
 
-          <CSVLink data={file} filename={FILENAME} className='button'>
+          <CSVLink
+            headers={headers}
+            data={file}
+            filename={FILENAME}
+            className='button'
+          >
             Baixar arquivo .csv 
           </CSVLink>
         </menu>

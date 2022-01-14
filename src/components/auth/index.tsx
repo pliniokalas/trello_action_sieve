@@ -15,7 +15,7 @@ function Auth({ auth }: { auth: () => void}) {
       ['scope', 'read'],
       ['expiration', '30days'],
       ['name', 'TrelloExtractor'],
-      ['key', 'cea234f8a2cc0bbd06523a66b9b8c2c9'],
+      ['key', process.env.REACT_APP_API_KEY as string],
       ['response_type', 'token'],
     ]);
 
