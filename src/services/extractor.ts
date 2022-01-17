@@ -4,6 +4,7 @@ import {
   IActivity,
   IActionData,
   IConfigProps,
+  actionType,
 } from '../utils/interfaces';
 
 // -------------------------------------------------------------------------------------- 
@@ -18,12 +19,6 @@ enum Week {
   'sab' = 6,
 }
 
-// Action types.
-const typeDictionary: { [k: string]: string } = {
-  'addMemberToCard': 'Entrou',
-  'removeMemberFromCard': 'Saiu'
-}
-
 // -------------------------------------------------------------------------------------- 
 
 async function extract(config: IConfigProps) {
@@ -36,15 +31,23 @@ async function extract(config: IConfigProps) {
 
     // Build the activity array.
     const allActivities = relevantActions.map((actionData: IActionData) => {
-      const status = actionData.type === 'updateCard'
-        ? `➥ [${actionData.data.listAfter!.name}]`
-        : typeDictionary[actionData.type];
+      let status = '' 
+      const isUpdate = actionData.type === 'updateCard';
+      const isArchived = actionData.data?.card?.closed;
+
+      if (isUpdate) {
+        status = isArchived 
+          ? 'Arquivou o card'
+          : `Moveu para [${actionData.data.listAfter!.name}]`;
+      } else {
+        status = actionType[actionData.type];
+      }
 
       const activity: IActivity = {
         member: actionData.memberCreator.fullName,
         board: actionData.data.board.name,
-        date: (new Date(actionData.date)).toLocaleString('pt-br'),
         weekDay: Week[new Date(actionData.date).getDay()],
+        date: (new Date(actionData.date)).toLocaleString('pt-br'),
         card: actionData.data.card.name,
         status,
       }
@@ -65,7 +68,17 @@ async function extract(config: IConfigProps) {
     return allActivities; 
 
   } catch (error: any) {
-    alert('Desculpe, não foi possível concluir a sua solicitação.')
+    let errorMessage = 'Desculpe, não foi possível concluir a sua solicitação.';
+
+    if (error.code === 401) {
+      errorMessage = 'Você não tem autorização para ver essas workspaces.';
+    }
+
+    if (error.code === 404) {
+      errorMessage = 'Workspaces não encontradas.';
+    }
+
+    alert(errorMessage)
     console.error(error.message);
     return null;
   }

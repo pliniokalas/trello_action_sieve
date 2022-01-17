@@ -4,8 +4,8 @@ export interface IActionData {
   type: string;
   date: string;
   data: {
-    board: { id: string; name: string; };
-    card: { id: string; name: string; };
+    board: { id: string; name: string; closed?: boolean; };
+    card: { id: string; name: string; closed?: boolean; };
     member?: any;
     list?: { id: string; name: string; };
     listBefore?: { id: string; name: string; };
@@ -20,7 +20,10 @@ export interface IActionData {
 export interface IConfigProps {
   apiKey: string;
   token: string;
-  organizations: string[];
+  targetIds: string[];
+  // Currently, these are the lables used in the interface. I need to find a better way to
+  // define these types.
+  targetType: 'workspaces' | 'quadros'; 
 }
 
 export interface IActivity {
@@ -36,3 +39,21 @@ export interface IActivityLog {
   [member: string]: IActivity[];
 }
 
+export interface IListProps {
+  items: any[];
+  select: (id: string) => void;
+  selected: string[];
+}
+
+export const actionType: { [k: string]: string } = {
+  'addMemberToCard': 'Entrou no card',
+  'removeMemberFromCard': 'Saiu do card',
+  'updateCard': 'Moveu o card',
+  'addAttachmentToCard': 'Anexou no card',
+  'createCard': 'Criou o card',
+  'commentCard': 'Comentou no card',
+  'updateCheckItemStateOnCard': 'Atualizou checklist',
+  'addToOrganizationBoard': 'Adicionou na workspace',
+  'createOrganization': 'Criou workspace',
+  'deleteCard': 'Deletou o card',
+}

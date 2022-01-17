@@ -9,12 +9,12 @@ function Auth({ auth }: { auth: () => void}) {
   const navigate = useNavigate();
 
   async function requestAuth() {
-    const baseUrl = 'https://api.trello.com';
+    const baseUrl = process.env.REACT_APP_BASE_URL;
 
     const params = new URLSearchParams([
       ['scope', 'read'],
-      ['expiration', '30days'],
-      ['name', 'TrelloExtractor'],
+      ['expiration', '1day'],
+      ['name', 'Trello Extractor'],
       ['key', process.env.REACT_APP_API_KEY as string],
       ['response_type', 'token'],
     ]);
@@ -39,7 +39,7 @@ function Auth({ auth }: { auth: () => void}) {
       <section>
         <p>Antes de poder usar o Trello Extractor é preciso conceder autorização para que ele possa ler seus quadros.</p>
 
-        <button onClick={requestAuth}>
+        <button className='ctaBtn' onClick={requestAuth}>
           Autorizar
         </button>
       </section>
@@ -57,7 +57,7 @@ function Auth({ auth }: { auth: () => void}) {
             required
           />
 
-          <button onClick={handleSaveToken}>
+          <button className='ctaBtn' onClick={handleSaveToken}>
             <SendIcon className='btnIcon' />
           </button>
         </form>
