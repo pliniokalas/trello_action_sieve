@@ -39,7 +39,7 @@ function Auth({ auth }: { auth: () => void}) {
       <section>
         <p>Antes de poder usar o Trello Extractor é preciso conceder autorização para que ele possa ler seus quadros.</p>
 
-        <button onClick={requestAuth}>
+        <button className='ctaBtn' onClick={requestAuth}>
           Autorizar
         </button>
       </section>
@@ -57,7 +57,7 @@ function Auth({ auth }: { auth: () => void}) {
             required
           />
 
-          <button onClick={handleSaveToken}>
+          <button className='ctaBtn' onClick={handleSaveToken}>
             <SendIcon className='btnIcon' />
           </button>
         </form>

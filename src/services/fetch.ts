@@ -3,25 +3,19 @@ import { IConfigProps } from '../utils/interfaces';
 
 // --------------------------------------------------------------------------------------
 
-async function fetchData(config: IConfigProps) {
-  const { apiKey, token, organizations } = config;
-  
-  const baseUrl = process.env.REACT_APP_BASE_URL;
-  const auth = `key=${apiKey}&token=${token}`
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  // Get all the boards from the organizations. 
-  console.info('Quadros encontrados:');
+// --------------------------------------------------------------------------------------
 
-  const idResult: string[][] = await Promise.all(
+// Fetch boardIds from list of workspace shortnames. 
+async function fetchFromWorkspace(auth: string, organizations: string[]) {
+  const boardIds: string[][] = await Promise.all(
     organizations.map(async (org: string) => {
       try {
         const boardUrl = `${baseUrl}/1/organizations/${org}/boards?${auth}`;
         const boardResp = await axios.get(boardUrl);
 
-        return boardResp.data.map((entry: any) => {
-          console.info(' ➤ ' + entry.name);
-          return entry.id
-        });
+        return boardResp.data.map((entry: any) => entry.id);
       } catch (error: any) {
         console.error(`Erro ao acessar workspace [${org}]`);
       }
@@ -29,9 +23,13 @@ async function fetchData(config: IConfigProps) {
   );
 
   // [[a, b, null]] -> [a, b]
-  const boardIds: string[] = idResult.flat().filter(id => id);
+  return boardIds.flat().filter(id => id);
+}
 
-  // Get all the actions for each board.
+// --------------------------------------------------------------------------------------
+
+// Fetch actions from list of board ids.
+async function fetchFromBoards(auth: string, boardIds: string[]) {
   const actionsResult = await Promise.all(
     boardIds.map(async (boardId: string) => {
       const actionUrl = `${baseUrl}/1/boards/${boardId}/actions?${auth}`;
@@ -42,9 +40,24 @@ async function fetchData(config: IConfigProps) {
   );
 
   // [[a, b]] -> [a, b]
-  const actions = actionsResult.flat(1);
-  console.info(`Atividades encontradas: ${actions.length}.`);
+  return actionsResult.flat(1);
+}
 
+// --------------------------------------------------------------------------------------
+
+async function fetchData(config: IConfigProps) {
+  const { apiKey, token, targetIds, targetType } = config;
+  const auth = `key=${apiKey}&token=${token}`
+
+  // Get a list of board ids from the list of workspace ids. 
+  const boardIds = targetType === 'workspaces'
+    ? await fetchFromWorkspace(auth, targetIds)
+    : targetIds;
+
+  // Get all the actions for each board.
+  const actions = await fetchFromBoards(auth, boardIds);
+
+  console.info(`Atividades encontradas: ${actions.length}.`);
   return actions;
 }
 

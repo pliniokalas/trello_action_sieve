@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
-import Form from 'components/form';
+import Dash from 'components/dash';
 import Help from 'components/help';
 import Auth from 'components/auth';
 
@@ -24,24 +24,25 @@ function App() {
 
   return (
     <div className="App">
-      <nav>
-        <NavLink to='/' className={({ isActive }) => (isActive ? 'on' : 'off')}> 
-          <HouseIcon className='btnIcon' />
-          Início
-        </NavLink>
-        <NavLink to='/ajuda' className={({ isActive }) => (isActive ? 'on' : 'off')}>
-          <QuestionIcon className='btnIcon' />
-          Ajuda
-        </NavLink>
-      </nav>
-
-      <h1>Trello Extractor</h1>
+      <header>
+        <h3>Trello Action Extractor</h3>
+        <nav>
+          <NavLink to='/' className={({ isActive }) => (isActive ? 'on' : 'off')}> 
+            <HouseIcon className='btnIcon' />
+            Início
+          </NavLink>
+          <NavLink to='/ajuda' className={({ isActive }) => (isActive ? 'on' : 'off')}>
+            <QuestionIcon className='btnIcon' />
+            Ajuda
+          </NavLink>
+        </nav>
+      </header>
 
       {isLoading
         ? <></>
         : (
         <Routes>
-          <Route path='/' element={isAuth ? <Form /> : <Navigate to={'/autorizar'} />} />
+          <Route path='/' element={isAuth ? <Dash /> : <Navigate to={'/autorizar'} />} />
           <Route path='autorizar' element={<Auth auth={() => setIsAuth(true)} />} />
           <Route path='ajuda' element={<Help />} />
         </Routes> )

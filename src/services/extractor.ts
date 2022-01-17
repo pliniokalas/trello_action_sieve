@@ -4,6 +4,7 @@ import {
   IActivity,
   IActionData,
   IConfigProps,
+  actionType,
 } from '../utils/interfaces';
 
 // -------------------------------------------------------------------------------------- 
@@ -18,12 +19,6 @@ enum Week {
   'sab' = 6,
 }
 
-// Action types.
-const typeDictionary: { [k: string]: string } = {
-  'addMemberToCard': 'Entrou no card',
-  'removeMemberFromCard': 'Saiu do card'
-}
-
 // -------------------------------------------------------------------------------------- 
 
 async function extract(config: IConfigProps) {
@@ -36,9 +31,17 @@ async function extract(config: IConfigProps) {
 
     // Build the activity array.
     const allActivities = relevantActions.map((actionData: IActionData) => {
-      const status = actionData.type === 'updateCard'
-        ? `Moveu para [${actionData.data.listAfter!.name}]`
-        : typeDictionary[actionData.type];
+      let status = '' 
+      const isUpdate = actionData.type === 'updateCard';
+      const isArchived = actionData.data?.card?.closed;
+
+      if (isUpdate) {
+        status = isArchived 
+          ? 'Arquivou o card'
+          : `Moveu para [${actionData.data.listAfter!.name}]`;
+      } else {
+        status = actionType[actionData.type];
+      }
 
       const activity: IActivity = {
         member: actionData.memberCreator.fullName,

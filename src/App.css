@@ -33,19 +33,34 @@ button, .button {
   align-items: center;
   justify-content: center;
 
-  padding: 1rem 2rem;
-  margin: 1rem auto;
-
   border: none;
   border-radius: 2px;
   cursor: pointer;
+}
+
+button:enabled:hover {
+  opacity: 0.8;
+}
+
+.ctaBtn {
+  padding: 1rem 2rem;
   font-weight: 700;
   color: var(--color_6);
   background-color: var(--color_5);
 }
 
-button:hover {
-  opacity: 0.8;
+.smallBtn {
+  padding: .5rem; 
+  background-color: var(--color_11);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 @keyframes dissolveIn {
@@ -74,7 +89,6 @@ body {
 
 .App {
   height: 100%;
-  padding: 1rem;
   margin: auto;
   box-sizing: border-box;
 
@@ -85,10 +99,21 @@ body {
   font-family: sans-serif;
 }
 
+
+header {
+  display: flex;
+  padding: 0 1rem;
+  color: white;
+  background-color: var(--color_0);
+}
+
+header > *:first-child {
+  margin-right: 1rem;
+}
+
 nav {
   padding: .5rem;
   display: flex;
-  margin: 0 auto;
 }
 
 nav > *:not(:last-child) {
@@ -103,26 +128,20 @@ nav > a {
 
   border-radius: 3px;
   color: inherit;
-  text-decoration: none;
-  font-weight: 700;
 }
 
-nav > a.on {
-  color: var(--color_0);
-  background-color: var(--color_10);
-}
-
+nav > a.on,
 nav > a:hover {
-  color: var(--color_9);
-  background-color: var(--color_11); 
-}
-
-h1 {
-  text-align: center;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, .3);
 }
 
 main {
   width: min(35rem, 100%);
   margin: 0 auto;
   animation: dissolveIn 300ms ease-out 0s forwards;
+}
+
+.loading {
+  margin: auto;
 }

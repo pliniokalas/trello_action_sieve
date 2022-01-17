@@ -1,0 +1,44 @@
+.dash {
+  width: min(55rem, 98%);
+  display: grid;
+  grid-template: auto / min-content auto;
+  overflow: hidden;
+}
+
+.dash h3 {
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+.dashMenu {
+  padding: 0;
+  width: max-content;
+}
+
+.dashBtn {
+  width: 100%;
+  padding: 1rem 2rem;
+  color: inherit;
+  background-color: transparent; 
+}
+
+.dashBtn:hover {
+  background-color: var(--color_11); 
+}
+
+.dashBtn.on {
+  font-weight: 700;
+  color: white; 
+  background-color: var(--color_0); 
+}
+
+.dashMenu button:not(:last-child) {
+  margin-bottom: .5rem;
+}
+
+.exportBtn:disabled {
+  color: lightgrey; 
+  background-color: var(--color_8);
+}
+
+
